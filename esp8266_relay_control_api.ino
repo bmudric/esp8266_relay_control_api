@@ -15,12 +15,11 @@
 const char* ssid = YOUR_SSID;
 const char* password = YOUR_PASSWORD;
 
-const char* deviceType = "relay";
 const char* serviceType = "relayAPI";
 const char* serviceProtocol = "tcp";
+const int port = 80;
 const int relayPin = D1; // select ESP8266 pin you want to use to control the relay
 const int ledPin = D0; // onboard LED
-const int port = 80;
 
 ESP8266WebServer server(port);
 
@@ -28,8 +27,6 @@ void handleOn();
 void handleOff();
 void handleStatus();
 void handleNotFound();
-
-const bool printDebug = false;
 
 void setup() {
   Serial.begin(115200);
