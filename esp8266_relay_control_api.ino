@@ -18,8 +18,8 @@ const char* password = YOUR_PASSWORD;
 const char* serviceType = "relayAPI";
 const char* serviceProtocol = "tcp";
 const int port = 80;
-const int relayPin = D1; // select ESP8266 pin you want to use to control the relay
-const int ledPin = D0; // onboard LED
+const int relayPin = 2; // select ESP8266 pin you want to use to control the relay
+const int ledPin = LED_BUILTIN; // onboard LED
 
 ESP8266WebServer server(port);
 
@@ -34,8 +34,8 @@ void setup() {
 
   pinMode(relayPin, OUTPUT);
   pinMode(ledPin, OUTPUT);
-  digitalWrite(relayPin, LOW);
-  digitalWrite(ledPin, HIGH); // turn onboard LED off to signify setup process started
+  digitalWrite(relayPin, HIGH);
+  digitalWrite(ledPin, LOW); // turn onboard LED off to signify setup process started
 
   String hostName = "relay_";
   hostName += ESP.getChipId();
@@ -67,7 +67,7 @@ void setup() {
   server.begin();
   debugf("Server started\n");
 
-  digitalWrite(ledPin, LOW); // turn onboard LED on to signify setup process completed
+  digitalWrite(ledPin, HIGH); // turn onboard LED on to signify setup process completed
 }
 
 void loop() {
@@ -75,15 +75,15 @@ void loop() {
   server.handleClient();
 }
 
-void handleOn() {
-  debugf("Client requesting relay ON\n");
+void handleOff() {
+  debugf("Client requesting relay OFF\n");
   digitalWrite(relayPin, HIGH);
   digitalWrite(ledPin, HIGH);
   sendStatusResponse();
 }
 
-void handleOff() {
-  debugf("Client requesting relay OFF\n");
+void handleOn() {
+  debugf("Client requesting relay ON\n");
   digitalWrite(relayPin, LOW);
   digitalWrite(ledPin, LOW);
   sendStatusResponse();
@@ -97,7 +97,7 @@ void handleStatus() {
 bool isRelayOn() {
   int relayPinState = digitalRead(relayPin);
   debugf("State of the relayPin: %d\n", relayPinState);
-  return relayPinState == HIGH;
+  return relayPinState == LOW;
 }
 
 void sendStatusResponse() {
