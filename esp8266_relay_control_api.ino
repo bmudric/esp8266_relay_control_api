@@ -106,6 +106,7 @@ void sendStatusResponse() {
   String response;
   serializeJson(doc, response);
 
+  server.sendHeader("Access-Control-Allow-Origin", "*");
   server.send(200, "application/json", response);
 }
 
